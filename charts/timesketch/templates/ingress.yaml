@@ -32,6 +32,7 @@ spec:
     - hosts:
       - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
     {{- end }}
+      secretName: {{ required "A valid .Values.ingress.tls.secretName entry is required!" .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
     - host: {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
@@ -81,6 +82,7 @@ spec:
     - hosts:
       - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
     {{- end }}
+      secretName: {{ required "A valid .Values.ingress.tls.secretName entry is required!" .Values.ingress.tls.secretName }}
   {{- end }}
   rules:
     - host: {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
