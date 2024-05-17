@@ -19,10 +19,21 @@ metadata:
     {{- fail "A valied .Values.ingress.gcp.staticIPName entry is required when using the GCE Ingress" }}
     {{- end }}
     {{- end }}
-    {{- if .Values.ingress.annotations }}
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    secretName: {{ required "A valid .Values.ingress.tls.secretName is required!" .Values.ingress.tls.secretName }}
+    {{- with .Values.ingress.tls.hosts }}
+    hosts:
+      {{- toYaml . | nindent 6 }}
+    {{- else }}
+    hosts:
+      - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
+    {{- end }}
+  {{- end }}
   rules:
     - host: {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
       http:
@@ -58,10 +69,21 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: {{ .Values.ingress.gcp.staticIPV6Name }}
     networking.gke.io/v1beta1.FrontendConfig: {{ include "timesketch.fullname" . }}-frontend-config
     {{- end }}
-    {{- if .Values.ingress.annotations }}
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+    secretName: {{ required "A valid .Values.ingress.tls.secretName is required!" .Values.ingress.tls.secretName }}
+    {{- with .Values.ingress.tls.hosts }}
+    hosts:
+      {{- toYaml . | nindent 6 }}
+    {{- else }}
+    hosts:
+      - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
+    {{- end }}
+  {{- end }}
   rules:
     - host: {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
       http:
