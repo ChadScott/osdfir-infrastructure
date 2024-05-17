@@ -25,12 +25,11 @@ metadata:
 spec:
   {{- if .Values.ingress.tls.enabled }}
   tls:
-    secretName: {{ required "A valid .Values.ingress.tls.secretName is required!" .Values.ingress.tls.secretName }}
     {{- with .Values.ingress.tls.hosts }}
-    hosts:
+    - hosts:
       {{- toYaml . | nindent 6 }}
     {{- else }}
-    hosts:
+    - hosts:
       - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
     {{- end }}
   {{- end }}
@@ -75,12 +74,11 @@ metadata:
 spec:
   {{- if .Values.ingress.tls.enabled }}
   tls:
-    secretName: {{ required "A valid .Values.ingress.tls.secretName is required!" .Values.ingress.tls.secretName }}
     {{- with .Values.ingress.tls.hosts }}
-    hosts:
+    - hosts:
       {{- toYaml . | nindent 6 }}
     {{- else }}
-    hosts:
+    - hosts:
       - {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
     {{- end }}
   {{- end }}
