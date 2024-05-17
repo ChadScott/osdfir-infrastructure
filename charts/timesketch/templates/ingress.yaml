@@ -19,6 +19,9 @@ metadata:
     {{- fail "A valied .Values.ingress.gcp.staticIPName entry is required when using the GCE Ingress" }}
     {{- end }}
     {{- end }}
+    {{- if .Values.ingress.annotations }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- end }}
 spec:
   rules:
     - host: {{ required "A valid .Values.ingress.host entry is required!" .Values.ingress.host }}
@@ -37,7 +40,7 @@ spec:
       port:
         number: {{ include "timesketch.service.port" . }} # Should match the port used by the Service
 {{- end }}
-{{- if and .Values.ingress.enabled .Values.ingress.gcp.staticIPV6Name }}
+{{- if and .Values.ingress.enabled .Values.ingress.gcp.staticIPV6Name eq .Values.ingress.className "gce" }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -54,6 +57,9 @@ metadata:
     {{- if (eq .Values.ingress.className "gce") }}
     kubernetes.io/ingress.global-static-ip-name: {{ .Values.ingress.gcp.staticIPV6Name }}
     networking.gke.io/v1beta1.FrontendConfig: {{ include "timesketch.fullname" . }}-frontend-config
+    {{- end }}
+    {{- if .Values.ingress.annotations }}
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
     {{- end }}
 spec:
   rules:
